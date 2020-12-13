@@ -1,6 +1,6 @@
 import anal from '../src';
 import sentimentList from './sentences.json';
-function main() {
+async function main() {
 	const length = sentimentList.sentences.length;
 	const sampleSize = 3;
 	console.log('\nAlgorithm test\n');
