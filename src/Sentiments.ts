@@ -7,12 +7,7 @@ export class Sentiments {
 		const tokenizer = new natural.AggressiveTokenizerEs();
 		const tokens = tokenizer.tokenize(this.input.toLowerCase());
 		// sentiments analysis
-		// optional, use stemming to improve? word match
-		const list = this.getBestFit(tokens);
-		const sentiments = list.reduce(
-			(sents1, sents2) => this.concatSents(sents1, sents2, (a, b) => a + b),
-			data.list,
-		);
+		const sentiments = this.getTokensSentiments(tokens);
 
 		const inputChars = this.input.split('');
 		const upperCaseTotal =
@@ -42,23 +37,36 @@ export class Sentiments {
 	private gramType = 2;
 	private distanceFilter = 0.75;
 
-	private getBestFit(tokens: string[]): Sentiments.list[] {
-		const ngrams = natural.NGrams.ngrams(tokens, this.gramType);
+	private getTokensSentiments(tokens: string[]): Sentiments.list {
+		const stemmedTokens = tokens.map((token) => natural.PorterStemmerEs.stem(token));
 		// generate sets over the tokens so that each token is associated with the resulting nGram (used for multi word matches)
-		const tokenSets: string[][] = ngrams.map((tokensNGram) => [
-			...tokensNGram,
-			tokensNGram.join(' '),
-		]);
-		return tokenSets.map(
-			(set) => this.bestMatch(set.map((word) => this.getSentiments(word)))[1],
+		return this.tokensSentiment(stemmedTokens).reduce(
+			(sents1, sents2) => this.concatSents(sents1, sents2, (a, b) => a + b),
+			data.list,
 		);
 	}
 
-	private getSentiments(inputWord: string): [number, Sentiments.list] {
+	private tokensSentiment(tokens: string[], blockedPrefix = 0): Sentiments.list[] {
+		if (tokens.length === 0) return [];
+		if (tokens.length === 1 && blockedPrefix !== 0) return [];
+		// compound word has preference since it has more context than a single word
+		const compoundWord = tokens.slice(0, this.gramType).join(' ');
+		const sentimentCompound = this.getSentiments(compoundWord);
+		if (sentimentCompound)
+			return [sentimentCompound, ...this.tokensSentiment(tokens.slice(1), this.gramType - 1)];
+		if (blockedPrefix > 0) return this.tokensSentiment(tokens.slice(1), blockedPrefix - 1);
+		const baseWord = tokens[0];
+		const sentimentBase = this.getSentiments(baseWord);
+		if (sentimentBase) return [sentimentBase, ...this.tokensSentiment(tokens.slice(1))];
+		return this.tokensSentiment(tokens.slice(1));
+	}
+
+	private getSentiments(inputWord: string): Sentiments.list {
 		const sentimentsList: [number, Sentiments.list][] = Object.entries(
 			data.wordValues,
-		).map((i) => [this.JaroWinker(inputWord, i[0]), i[1]]);
-		return this.bestMatch(sentimentsList);
+		).map(([word, sentiments]) => [this.JaroWinker(inputWord, word), sentiments]);
+		const bestMatch = this.bestMatch(sentimentsList);
+		return bestMatch[0] > 0.75 ? bestMatch[1] : undefined;
 	}
 	private JaroWinker(str1: string, str2: string): number {
 		const JWDistance = natural.JaroWinklerDistance(str1, str2);

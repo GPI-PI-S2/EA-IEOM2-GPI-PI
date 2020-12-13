@@ -11,7 +11,7 @@ async function main() {
 		const index = Math.floor(Math.random() * length);
 		const sentence = sentimentList.sentences[index];
 		console.log(`\nsentence:\n${sentence}`);
-		const response = anal(sentence, 2);
+		const response = anal(sentence, 1);
 		console.table(response);
 	});
 	console.log('Ended');
