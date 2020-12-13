@@ -6,7 +6,7 @@ function main() {
 	console.log('Length:', length);
 	console.log('Calculating...');
 	console.time('Duration');
-	sentimentList.sentences.forEach((sentence) => anal(sentence));
+	sentimentList.sentences.forEach((sentence) => anal(sentence, 2));
 	console.log('\n');
 	console.timeEnd('Duration');
 	console.log('\n');
