@@ -6,7 +6,7 @@ async function main() {
 	console.log('Length:', length);
 	console.log('Calculating...');
 	console.time('Duration');
-	const piscina = new Piscina({ filename: '../ieom2/dist/index.js' });
+	const piscina = new Piscina({ filename: '../EA-IEOM2-GPI-PI/dist/index.js' });
 	await Promise.all(
 		sentimentList.sentences.map(async (sentence) => await piscina.runTask(sentence)),
 	);
