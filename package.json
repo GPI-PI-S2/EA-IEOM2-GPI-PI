@@ -5,7 +5,7 @@
 	"main": "dist/index.js",
 	"scripts": {
 		"lint": "eslint . --ext .ts",
-		"postinstall": "tsc --project ./",
+		"postinstall": "tsc -p ./tsconfig.json",
 		"build": "tsc -p ./tsconfig.json",
 		"test": "npm run lint && tsnd --respawn -r tsconfig-paths/register ./test",
 		"test-performance": "npm run lint && ts-node ./test/performance",
