@@ -8,9 +8,7 @@ async function main() {
 	console.time('Duration');
 	const piscina = new Piscina({ filename: '../EA-IEOM2-GPI-PI/dist/index.js' });
 	await Promise.all(
-		sentimentList.sentences.map(
-			async (sentence) => await piscina.runTask({ sentence, version: 2 }),
-		),
+		sentimentList.sentences.map(async (sentence) => await piscina.runTask(sentence)),
 	);
 	console.log('\n');
 	console.timeEnd('Duration');

@@ -1,5 +1,5 @@
-import { Sentiments } from '../Sentiments';
-export const wordValues: Record<string, Sentiments.list> = {
+import { list } from './';
+export const wordValues: Record<string, list> = {
 	abandon: {
 		asertividad: 0,
 		'autoconciencia emocional': 0,
