@@ -10,6 +10,7 @@
 		"test": "npm run lint && tsnd --respawn -r tsconfig-paths/register ./test",
 		"test-performance": "npm run lint && ts-node ./test/performance",
 		"test-performance-threads": "npm run lint && npm run build && ts-node ./test/threads",
+		"test-recalc": "npm run lint && npm run build && ts-node ./test/recalc",
 		"git-update-local": "git remote update origin --prune"
 	},
 	"author": "DEV TEAM (PI-GPI-02-2020)",

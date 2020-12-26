@@ -1,7 +1,7 @@
 import anal from '../src';
-import sentimentList from './sentences.json';
+import sentimentList from './twitter.json';
 async function main() {
-	const length = sentimentList.sentences.length;
+	const length = sentimentList.length;
 	const sampleSize = 3;
 	console.log('\nAlgorithm test\n');
 	console.log('Length:', length);
@@ -9,9 +9,9 @@ async function main() {
 	console.log('Calculating...');
 	new Array(sampleSize).fill(null).forEach(() => {
 		const index = Math.floor(Math.random() * length);
-		const sentence = sentimentList.sentences[index];
-		console.log(`\nsentence:\n${sentence}`);
-		const response = anal(sentence);
+		const sentence = sentimentList[index];
+		console.log(`\nsentence:\n${sentence.content}`);
+		const response = anal(sentence.content);
 		console.table(response);
 	});
 	console.log('Ended');

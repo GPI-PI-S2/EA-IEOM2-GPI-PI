@@ -1,14 +1,14 @@
 import Piscina from 'piscina';
-import sentimentList from './sentences.json';
+import sentimentList from './twitter.json';
 async function main() {
-	const length = sentimentList.sentences.length;
+	const length = sentimentList.length;
 	console.log('\nPerformance test (threads)\n');
 	console.log('Length:', length);
 	console.log('Calculating...');
 	console.time('Duration');
 	const piscina = new Piscina({ filename: '../EA-IEOM2-GPI-PI/dist/index.js' });
 	await Promise.all(
-		sentimentList.sentences.map(async (sentence) => await piscina.runTask(sentence)),
+		sentimentList.map(async (sentence) => await piscina.runTask(sentence.content)),
 	);
 	console.log('\n');
 	console.timeEnd('Duration');

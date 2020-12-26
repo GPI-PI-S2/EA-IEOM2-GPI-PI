@@ -1,12 +1,12 @@
 import anal from '../src';
-import sentimentList from './sentences.json';
+import sentimentList from './twitter.json';
 function main() {
-	const length = sentimentList.sentences.length;
+	const length = sentimentList.length;
 	console.log('\nPerformance test (single)\n');
 	console.log('Length:', length);
 	console.log('Calculating...');
 	console.time('Duration');
-	sentimentList.sentences.forEach((sentence) => anal(sentence));
+	sentimentList.forEach((sentence) => anal(sentence.content));
 	console.log('\n');
 	console.timeEnd('Duration');
 	console.log('\n');
