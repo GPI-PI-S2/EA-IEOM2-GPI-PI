@@ -1,5 +1,5 @@
 import Piscina from 'piscina';
-import sentimentList from './twitter.json';
+import sentimentList from './youtube.json';
 async function main() {
 	const length = sentimentList.length;
 	console.log('\nPerformance test (threads)\n');
